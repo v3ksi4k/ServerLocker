@@ -1,0 +1,36 @@
+name: ServerLocker
+description: Adds utilities that allow admins to lock the server.
+author: veksiak
+version: '1.0'
+main: veksiak.serverlocker.ServerLocker
+api-version: '1.20'
+load: STARTUP
+permissions:
+  serverlocker.serverlock:
+    description: Allows the user to lock the server using the /serverlock command.
+    default: false
+  serverlocker.serverunlock:
+    description: Allows the user to unlock the server using the /serverunlock command.
+    default: false
+  serverlocker.lockstatus:
+    description: Allows the user to check the server's lock status.
+    default: false
+  serverlocker.help:
+    description: Allows the user to view the plugin's commands
+    default: false
+  serverlocker.immunity:
+    description: Makes the user immune to all server locks.
+    default: false
+commands:
+  serverlocker:
+    description: Displays the plugin's commands.
+    usage: /serverlocker
+  serverlock:
+    description: Locks the server using a chosen mode.
+    usage: /serverlock [all/whitelist/blacklist], /lock permission <permission>
+  serverunlock:
+    description: Unlocks the server.
+    usage: /serverunlockgit
+  lockstatus:
+    description: Displays the status of the server's lock.
+    usage: /lockstatus
