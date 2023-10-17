@@ -1,8 +1,9 @@
 # It is not recommended to edit the server lock using the config. If you locked yourself out of the server, you can unlock it by using /serverunlock command in the server's console.
 # Available options: none, permission, whitelist, blacklist, all.
+# Warning! Always use real permissions when setting the permission server lock.
 # After choosing the lock type you need to provide certain arguments for it to work.
 # Required arguments: none - none, permission - [Permission] the permission that should be required to join the server,
-# whitelist - [PlayerList] a list of player UUID's, blacklist - [PlayerList] a list of player IP addresses.
+# whitelist - [PlayerList] a list of player UUID's, blacklist - [PlayerList] a list of player UUID's.
 # Providing invalid arguments for a certain lock type will cause the plugin to reset it.
 
 IgnoreSender: true

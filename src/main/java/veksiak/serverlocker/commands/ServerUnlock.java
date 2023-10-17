@@ -33,7 +33,7 @@ public final class ServerUnlock implements CommandExecutor {
         } else if (commandSender instanceof ConsoleCommandSender) {
             ConsoleCommandSender sender = (ConsoleCommandSender) commandSender;
             if (Objects.equals(plugin.getLockType(), "none")) {
-                sender.sendMessage("[ServerLocker] " + "Error! The server is not locked.");
+                sender.sendMessage("[ServerLocker] Error! The server is not locked.");
                 return true;
             }
             plugin.updateConfigAndVariables("none", null, null, null, null);

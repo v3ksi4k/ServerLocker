@@ -57,7 +57,7 @@ public final class ServerLock implements TabExecutor {
                     plugin.updateConfigAndVariables("permission", null, args[1], sender.getUniqueId().toString(), sender.getName());
                     for (Player player : Bukkit.getOnlinePlayers()) {
                         if (isAffected(player, sender))
-                            player.kickPlayer(ChatColor.GOLD + "[ServerLocker] " + ChatColor.RED + "The server is locked.");
+                            if(!player.hasPermission(args[1])) player.kickPlayer(ChatColor.GOLD + "[ServerLocker] " + ChatColor.RED + "The server is locked.");
                     }
                     sender.sendMessage(ChatColor.GOLD + "[ServerLocker] " + ChatColor.GREEN + "Server has been successfully locked." + ChatColor.BLUE + " Lock type: permission, Permission: " + args[1]);
                     plugin.getLogger().info("Server has been successfully locked by " + sender.getName() + " UUID: " + sender.getUniqueId() + " Lock type: " + plugin.getLockType());
@@ -66,7 +66,7 @@ public final class ServerLock implements TabExecutor {
                     if (Objects.equals(args[1], "new")) {
                         List<String> blacklist = new ArrayList<>();
                         for (Player player : Bukkit.getOnlinePlayers()) {
-                            if (isAffected(player, sender)) blacklist.add(player.getAddress().toString());
+                            if (isAffected(player, sender)) blacklist.add(player.getUniqueId().toString());
                         }
                         if (blacklist.size() == 0) {
                             sender.sendMessage(ChatColor.GOLD + "[ServerLocker] " + ChatColor.RED + "Error! Blacklist can't be empty.");
@@ -74,7 +74,7 @@ public final class ServerLock implements TabExecutor {
                         }
                         plugin.updateConfigAndVariables("blacklist", blacklist, null, sender.getUniqueId().toString(), sender.getName());
                         for (Player player : Bukkit.getOnlinePlayers()) {
-                            player.kickPlayer(ChatColor.GOLD + "[ServerLocker] " + ChatColor.RED + "The server is locked.");
+                            if (isAffected(player, sender)) player.kickPlayer(ChatColor.GOLD + "[ServerLocker] " + ChatColor.RED + "The server is locked.");
                         }
                         sender.sendMessage(ChatColor.GOLD + "[ServerLocker] " + ChatColor.GREEN + "Server has been successfully locked." + ChatColor.BLUE + " Lock type: blacklist");
                         plugin.getLogger().info("Server has been successfully locked by " + sender.getName() + " UUID: " + sender.getUniqueId() + " Lock type: " + plugin.getLockType());
@@ -88,8 +88,8 @@ public final class ServerLock implements TabExecutor {
                         int i = 0;
                         for (Player player : Bukkit.getOnlinePlayers()) {
                             if (isAffected(player, sender)) {
-                                if (!blacklist.contains(player.getAddress().toString())) {
-                                    blacklist.add(player.getAddress().toString());
+                                if (!blacklist.contains(player.getUniqueId().toString())) {
+                                    blacklist.add(player.getUniqueId().toString());
                                     i++;
                                 }
                             }
@@ -99,9 +99,9 @@ public final class ServerLock implements TabExecutor {
                             return true;
                         }
                         for (Player player : Bukkit.getOnlinePlayers()) {
-                            player.kickPlayer(ChatColor.GOLD + "[ServerLocker] " + ChatColor.RED + "The server is locked.");
+                            if (isAffected(player, sender)) player.kickPlayer(ChatColor.GOLD + "[ServerLocker] " + ChatColor.RED + "The server is locked.");
                         }
-                        sender.sendMessage(ChatColor.GOLD + "[ServerLocker] " + ChatColor.GREEN + "Successfully added " + ChatColor.AQUA + i + ChatColor.GREEN + "players to the blacklist.");
+                        sender.sendMessage(ChatColor.GOLD + "[ServerLocker] " + ChatColor.GREEN + "Successfully added " + ChatColor.AQUA + i + ChatColor.GREEN + " players to the blacklist.");
                         plugin.getLogger().info("New blacklisted players added by " + sender.getName() + " UUID: " + sender.getUniqueId());
                         return true;
                     }
@@ -120,7 +120,7 @@ public final class ServerLock implements TabExecutor {
                                 player.kickPlayer(ChatColor.GOLD + "[ServerLocker] " + ChatColor.RED + "The server is locked.");
                             }
                         }
-                        sender.sendMessage("[ServerLocker] " + "Server has been successfully locked." + " Lock type: all");
+                        sender.sendMessage("[ServerLocker] Server has been successfully locked. Lock type: all");
                         return true;
                     case "whitelist":
                         List<String> whitelist = new ArrayList<>();
@@ -128,7 +128,7 @@ public final class ServerLock implements TabExecutor {
                             whitelist.add(player.getUniqueId().toString());
                         }
                         plugin.updateConfigAndVariables("whitelist", whitelist, null, null, null);
-                        sender.sendMessage("[ServerLocker] " + "Server has been successfully locked." + " Lock type: whitelist");
+                        sender.sendMessage("[ServerLocker] Server has been successfully locked. Lock type: whitelist");
                         return true;
                 }
             } else if (args.length == 2) {
@@ -138,47 +138,47 @@ public final class ServerLock implements TabExecutor {
                         if (isAffected(player))
                             player.kickPlayer(ChatColor.GOLD + "[ServerLocker] " + ChatColor.RED + "The server is locked.");
                     }
-                    sender.sendMessage("[ServerLocker] " + "Server has been successfully locked." + " Lock type: permission, Permission: " + args[1]);
+                    sender.sendMessage("[ServerLocker] Server has been successfully locked. Lock type: permission, Permission: " + args[1]);
                     return true;
                 } else if (Objects.equals(args[0], "blacklist")) {
                     if (Objects.equals(args[1], "new")) {
                         List<String> blacklist = new ArrayList<>();
                         for (Player player : Bukkit.getOnlinePlayers()) {
-                            if (isAffected(player)) blacklist.add(player.getAddress().toString());
+                            if (isAffected(player)) blacklist.add(player.getUniqueId().toString());
                         }
                         if (blacklist.size() == 0) {
-                            sender.sendMessage("[ServerLocker] " + "Error! Blacklist can't be empty.");
+                            sender.sendMessage("[ServerLocker] Error! Blacklist can't be empty.");
                             return true;
                         }
                         plugin.updateConfigAndVariables("blacklist", blacklist, null, null, null);
                         for (Player player : Bukkit.getOnlinePlayers()) {
-                            player.kickPlayer("[ServerLocker] " + "The server is locked.");
+                            if (isAffected(player)) player.kickPlayer("[ServerLocker] The server is locked.");
                         }
-                        sender.sendMessage("[ServerLocker] " + "Server has been successfully locked." + " Lock type: blacklist");
+                        sender.sendMessage("[ServerLocker] Server has been successfully locked." + " Lock type: blacklist");
                         return true;
                     } else if (Objects.equals(args[1], "add")) {
                         if (!Objects.equals(plugin.getLockType(), "blacklist")) {
-                            sender.sendMessage("[ServerLocker] " + "Error! Lock type must be set to blacklist in order to add something to it.");
+                            sender.sendMessage("[ServerLocker] Error! Lock type must be set to blacklist in order to add something to it.");
                             return true;
                         }
                         List<String> blacklist = plugin.getPlayerList();
                         int i = 0;
                         for (Player player : Bukkit.getOnlinePlayers()) {
                             if (isAffected(player)) {
-                                if (!blacklist.contains(player.getAddress().toString())) {
-                                    blacklist.add(player.getAddress().toString());
+                                if (!blacklist.contains(player.getUniqueId().toString())) {
+                                    blacklist.add(player.getUniqueId().toString());
                                     i++;
                                 }
                             }
                         }
                         if (i == 0) {
-                            sender.sendMessage("[ServerLocker] " + "Error! No new players were added to the blacklist.");
+                            sender.sendMessage("[ServerLocker] Error! No new players were added to the blacklist.");
                             return true;
                         }
                         for (Player player : Bukkit.getOnlinePlayers()) {
                             player.kickPlayer("[ServerLocker] " + "The server is locked.");
                         }
-                        sender.sendMessage("[ServerLocker] " + "Successfully added " + i + "players to the blacklist.");
+                        sender.sendMessage("[ServerLocker] Successfully added " + i + " players to the blacklist.");
                         return true;
                     }
                 }
@@ -197,7 +197,7 @@ public final class ServerLock implements TabExecutor {
             possibilities.add("permission");
             possibilities.add("whitelist");
             possibilities.add("blacklist");
-        } else if (args.length == 2 && commandSender.hasPermission("serverlocker.serverlock")) {
+        } else if (args.length == 2 && commandSender.hasPermission("serverlocker.serverlock") && Objects.equals(args[0], "blacklist")) {
             possibilities.add("new");
             possibilities.add("add");
         }
@@ -208,21 +208,23 @@ public final class ServerLock implements TabExecutor {
         player.sendMessage(ChatColor.GOLD + "[ServerLocker] /serverlock: ");
         player.sendMessage(ChatColor.GREEN + "/serverlock all" + ChatColor.AQUA + " - Kicks all players and locks the server for everyone.");
         player.sendMessage(ChatColor.GREEN + "/serverlock permission <permission>" + ChatColor.AQUA + " - Kicks all players without a specified permission and locks the server for every player that doesn't have it.");
+        player.sendMessage(ChatColor.RED+"Warning! Always use real permissions when setting the permission server lock.");
         player.sendMessage(ChatColor.GREEN + "/serverlock whitelist" + ChatColor.AQUA + " - Locks the server for all players except the players that are currently on the server.");
-        player.sendMessage(ChatColor.GREEN + "/serverlock blacklist new" + ChatColor.AQUA + " - Kicks all players and locks the server for them");
-        player.sendMessage(ChatColor.GREEN + "/serverlock blacklist add" + ChatColor.AQUA + " - Adds all players that are currently on the server to a previously set blacklist");
+        player.sendMessage(ChatColor.GREEN + "/serverlock blacklist new" + ChatColor.AQUA + " - Kicks all players and locks the server for them.");
+        player.sendMessage(ChatColor.GREEN + "/serverlock blacklist add" + ChatColor.AQUA + " - Adds all players that are currently on the server to a previously set blacklist.");
         player.sendMessage(ChatColor.LIGHT_PURPLE + "Players with the permission " + ChatColor.YELLOW + "serverlocker.immunity" + ChatColor.LIGHT_PURPLE + " will be completely ignored by the plugin.");
         player.sendMessage(ChatColor.LIGHT_PURPLE + "Have in mind that depending on what is set in the plugin's config the command sender and server operators may not be affected.");
     }
 
     private void sendHelpMessage(ConsoleCommandSender sender) {
         sender.sendMessage("[ServerLocker] /serverlock: ");
-        sender.sendMessage("/serverlock all" + " - Kicks all players and locks the server for everyone.");
-        sender.sendMessage("/serverlock permission <permission>" + " - Kicks all players without a specified permission and locks the server for every player that doesn't have it.");
-        sender.sendMessage("/serverlock whitelist" + " - Locks the server for all players except the players that are currently on the server.");
-        sender.sendMessage("/serverlock blacklist new" + " - Kicks all players and locks the server for them");
-        sender.sendMessage("/serverlock blacklist add" + " - Adds all players that are currently on the server to a previously set blacklist and kicks them.");
-        sender.sendMessage("Players with the permission= " + "serverlocker.immunity" + " will be completely ignored by the plugin.");
+        sender.sendMessage("/serverlock all - Kicks all players and locks the server for everyone.");
+        sender.sendMessage("/serverlock permission <permission> - Kicks all players without a specified permission and locks the server for every player that doesn't have it.");
+        sender.sendMessage("Warning! Always use real permissions when setting the permission server lock.");
+        sender.sendMessage("/serverlock whitelist - Locks the server for all players except the players that are currently on the server.");
+        sender.sendMessage("/serverlock blacklist new - Kicks all players and locks the server for them.");
+        sender.sendMessage("/serverlock blacklist add - Adds all players that are currently on the server to a previously set blacklist and kicks them.");
+        sender.sendMessage("Players with the permission serverlocker.immunity will be completely ignored by the plugin.");
         sender.sendMessage("Please have in mind that depending on what is set in the plugin's config the command sender and server operators may not be affected.");
     }
 

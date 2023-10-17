@@ -51,9 +51,10 @@ public final class ServerLocker extends JavaPlugin {
         List<String> comments = new ArrayList<>();
         comments.add("It is not recommended to edit the server lock using the config. If you locked yourself out of the server, you can unlock it by using /serverunlock command in the server's console.");
         comments.add("Available options: none, permission, whitelist, blacklist, all.");
+        comments.add("Warning! Always use real permissions when setting the permission server lock.");
         comments.add("After choosing the lock type you need to provide certain arguments for it to work.");
         comments.add("Required arguments: none - none, permission - [Permission] the permission that should be required to join the server,");
-        comments.add("whitelist - [PlayerList] a list of player UUID's, blacklist - [PlayerList] a list of player IP addresses.");
+        comments.add("whitelist - [PlayerList] a list of player UUID's, blacklist - [PlayerList] a list of player UUID's.");
         comments.add("Providing invalid arguments for a certain lock type will cause the plugin to reset it.");
         config.addDefault("IgnoreSender", true);
         config.addDefault("IgnoreOperators", false);
@@ -64,7 +65,7 @@ public final class ServerLocker extends JavaPlugin {
     }
 
 
-     /*  Method used to format the config by removing redundant entries, throw warnings if needed and setting emergency locks after detecting invalid config content.*/
+     /*  Method used to format the config by removing redundant entries, throw warnings if needed and setting emergency locks after detecting invalid config content. */
     private void getVariablesAndFormatConfig() {
         if (config.getString("Lock.LockType") == null) {
             updateConfigAndVariables("none", null, null, null, null);
@@ -72,7 +73,7 @@ public final class ServerLocker extends JavaPlugin {
             switch (config.getString("Lock.LockType")) {
                 case "permission":
                     if (config.getString("Lock.Permission") == null) {
-                        //If invalid data is provided in the config file, the server will get locked for safety.
+                        //If invalid data is provided in the config file, the server will get locked for safety reasons.
                         updateConfigAndVariables("all", null, null, null, null);
                         getLogger().warning("No required arguments provided for lock type: permission. For safety reasons the lock type will be set to: all");
                         break;

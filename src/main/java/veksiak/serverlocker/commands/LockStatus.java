@@ -33,10 +33,10 @@ public final class LockStatus implements CommandExecutor {
                     player.sendMessage(ChatColor.GREEN + "Permission: " + ChatColor.AQUA + plugin.getPermission());
                     break;
                 case "whitelist":
-                    player.sendMessage(ChatColor.GREEN + "Whitelist: " + ChatColor.AQUA + "Due to safety reasons: Available in the config of the plugin.");
+                    player.sendMessage(ChatColor.GREEN + "Whitelist: " + ChatColor.AQUA + "Available in the config of the plugin. (Due to safety reasons)");
                     break;
                 case "blacklist":
-                    player.sendMessage(ChatColor.GREEN + "Blacklist: " + ChatColor.AQUA + "Due to safety reasons: Available in the config of the plugin.");
+                    player.sendMessage(ChatColor.GREEN + "Blacklist: " + ChatColor.AQUA + "Available in the config of the plugin. (Due to safety reasons)");
                     break;
             }
             player.sendMessage(ChatColor.LIGHT_PURPLE + "IgnoreSender: " + ChatColor.YELLOW + plugin.isIgnoreSender());
@@ -52,10 +52,10 @@ public final class LockStatus implements CommandExecutor {
                     sender.sendMessage("Permission: " + plugin.getPermission());
                     break;
                 case "whitelist":
-                    sender.sendMessage("Whitelist: " + "Due to safety reasons: Available in the config.yml of the plugin.");
+                    sender.sendMessage("Whitelist: Available in the config of the plugin. (Due to safety reasons)");
                     break;
                 case "blacklist":
-                    sender.sendMessage("Blacklist: " + "Due to safety reasons: Available in the config.yml of the plugin.");
+                    sender.sendMessage("Blacklist: Available in the config of the plugin. (Due to safety reasons)");
                     break;
             }
             sender.sendMessage("IgnoreSender: " + plugin.isIgnoreSender());
