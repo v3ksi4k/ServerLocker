@@ -19,14 +19,15 @@ This plugin is used to lock a minecraft server from a certain group of players j
   * serverlocker.immunity - Makes the user immune to all server locks.
 
 ## The config.yml file:
-Server locks can also be set by editing the config.yml file.
+Server locks can also be set in the config.yml file, by editing the value of "LockType".
+
 Remember that everytime you modify something in the file, the server will need to be restarted for the changes to apply.
 
 The config file looks similar to this (Any changes to the server lock itself happen in the "Lock" path):
 
 ![image](https://github.com/v3ksi4k/ServerLocker/assets/147096926/ff16e24a-6678-4a88-aec9-edc9a3b0c342)
 
-### Some lock types require its own additional arguments **(Failing to provide them may reset the config or/and set a emergency lock of type "all")**:
+### Some lock types require its own additional arguments **(Failing to provide them may reset the config or/and set an emergency lock of type "all")**:
   * permission [Permission] _permission_ - All players without the *serverlocker.serverlock* permission won't be able to join the server.
   > e.g. Permission: serverlocker.serverlock
   * whitelist [PlayerList] _a list of UUID's_ - Only players with UUID's from the list will be able to join the server.
@@ -36,4 +37,4 @@ The config file looks similar to this (Any changes to the server lock itself hap
   
 ### Lock types that don't require arguments:
   * all - Locks the server for everyone.
-  * none - Turns off the server lock.
+  * none - No server lock.
