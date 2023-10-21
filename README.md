@@ -28,7 +28,7 @@ The config file looks similar to this (Any changes to the server lock itself hap
 ![image](https://github.com/v3ksi4k/ServerLocker/assets/147096926/311c4772-a148-4534-9784-2d6a3d34c44c)
 
 ### Some lock types require its own additional arguments **(Failing to provide them may reset the config or/and set an emergency lock of type "all")**:
-  * permission [Permission] _permission_ - All players without the *serverlocker.serverlock* permission won't be able to join the server.
+  * permission [Permission] _permission_ - All players without the *permission* permission won't be able to join the server.
   > e.g. Permission: serverlocker.serverlock
   * whitelist [PlayerList] _a list of UUID's_ - Only players with UUID's from the list will be able to join the server.
   > e.g. PlayerList: ['UUID1', 'UUID2', 'UUID3']
